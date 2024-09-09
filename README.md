@@ -114,7 +114,11 @@ ORM sendiri adalah Object-Relational Mapping. Django disebut ORM karen Django me
 
 
 
-
+```
+git status
+git add
+git commit
+```
 
 
 
