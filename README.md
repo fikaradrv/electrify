@@ -1,4 +1,5 @@
 # Tugas 2 PBP Fikar Hilmi Adhrevi 2306203873
+https://fikar-hilmi-electrify.pbp.cs.ui.ac.id/
 ### Cara saya mengimplementasikan checklist
 **1. Membuat sebuah proyek Django baru**
 Pertama yang saya lakukan adalah membuat direktori baru dengan nama electrify dan masuk ke dalamnya, lalu di dalam direktori tersebut saya menyalakan virtual environment setelah itu di dalam direktori yang sama saya membuat berkas requirements.txt yang berisi dependencies yang perlu diinstall. setelah file requirements tersebut saya buat saya melakukan pip install -r requirements.txt pada cmd. setelah itu saya menjalankan django-admin startproject electrify . untuk membuat projek Django baru bernama electrify
