@@ -8,6 +8,7 @@ Saya menjalankan python manage.py startapp main. Setelah perintah di atas dijala
 
 **3. Melakukan routing pada proyek agar dapat menjalankan aplikasi main.**
 Pada direktori proyek electrify, pada berkas settings.py saya menambahkan 'main' pada INSTALLED_APPS sehingga menjadi 
+
 '''
 INSTALLED_APPS = [
     ...,
@@ -17,6 +18,7 @@ INSTALLED_APPS = [
 
 **4. Membuat model pada aplikasi main dengan nama Product dan memiliki atribut wajib sebagai berikut.**
 pada app main pada berkas models.py saya menambahkan 
+
 '''
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -30,6 +32,7 @@ setelah itu saya melakukan migrasi agar django dapat melacak perubahan pada mode
 
 **5.Membuat sebuah fungsi pada views.py untuk dikembalikan ke dalam sebuah template HTML yang menampilkan nama aplikasi serta nama dan kelas.**
 Di dalam direktori main saya membuka views.py lalu saya isi dengan 
+
 '''
 from django.shortcuts import render
 
@@ -45,7 +48,8 @@ Fungsi ini bertugas untuk menangani permintaan HTTP dan mengembalikan tampilan y
 
 **5. Membuat sebuah routing pada urls.py aplikasi main untuk memetakan fungsi yang telah dibuat pada views.py**
 
-Di dalam direktori main saya membuat berkas baru bernama urls.py yang berisi 
+Di dalam direktori main saya membuat berkas baru bernama urls.py yang berisi
+
 '''
 from django.urls import path
 from main.views import show_main
@@ -58,6 +62,7 @@ urlpatterns = [
 '''
 
 kode ini berfungsi mengatur rute URL yang terkait dengan aplikasi main. selanjutnya kita akan menambahkan rute url dalam urls.py proyek untuk menghubungkannya dengan main. pada berkas urls.py pada direktori proyek electrify saya menambahkan impor fungsi include lalu menambahkan pada url patterns menjadi
+
 '''
 urlpatterns = [
     ...
@@ -69,6 +74,7 @@ urls.py ini berfungsi untuk mengatur rute url tingkat proyek
 
 **6.Melakukan deployment ke PWS terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses melalui Internet.**
 Pada web PWS saya membuat project baru bernama electrify lalu pada settings.py di projek saya menambahkan URL deployment PWS pada ALLOWED_HOSTS sehingga menjadi
+
 '''
     ALLOWED_HOSTS = ["localhost", "127.0.0.1", "fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
 '''
