@@ -86,14 +86,8 @@ Untuk membuat sebuah readme saya membuatnya pada notepad lalu saya save dalam be
 
 ### Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
 
-http request-->		urls.py
-					   |
-					   |
-models.py <--- read/write data --->    views.py ---> HTTP Response
-					   |
-					   |
-					template
-					filename.html
+![Screenshot 2024-09-09 155824](https://github.com/user-attachments/assets/7338e963-d138-49f2-8f75-224083b2393d)
+
 
 urls.py ---> nentuin URL sesuai dengan request
 views.py ---> jalanin logika untuk menangani request, meminta data dari models.py
