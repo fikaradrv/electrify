@@ -8,20 +8,22 @@ Saya menjalankan python manage.py startapp main. Setelah perintah di atas dijala
 
 **3. Melakukan routing pada proyek agar dapat menjalankan aplikasi main.**
 Pada direktori proyek electrify, pada berkas settings.py saya menambahkan 'main' pada INSTALLED_APPS sehingga menjadi 
-INSTALLED_APPS = [
-    ...,
-    'main'
-]
+'''
+    INSTALLED_APPS = [
+        ...,
+        'main'
+    ]
+'''
 
 **4. Membuat model pada aplikasi main dengan nama Product dan memiliki atribut wajib sebagai berikut.**
 pada app main pada berkas models.py saya menambahkan 
 '''
-class Product(models.Model):
-    name = models.CharField(max_length=255)
-    price = models.IntegerField()
-    description = models.TextField()
-    stock = models.IntegerField()
-    rating = models.IntegerField()
+    class Product(models.Model):
+        name = models.CharField(max_length=255)
+        price = models.IntegerField()
+        description = models.TextField()
+        stock = models.IntegerField()
+        rating = models.IntegerField()
 '''
 
 setelah itu saya melakukan migrasi agar django dapat melacak perubahan pada model basis data yang kita miliki
@@ -29,16 +31,16 @@ setelah itu saya melakukan migrasi agar django dapat melacak perubahan pada mode
 **5.Membuat sebuah fungsi pada views.py untuk dikembalikan ke dalam sebuah template HTML yang menampilkan nama aplikasi serta nama dan kelas.**
 Di dalam direktori main saya membuka views.py lalu saya isi dengan 
 '''
-from django.shortcuts import render
+    from django.shortcuts import render
 
-def show_main(request):
-    context = {
-        'npm' : '2306203873',
-        'name': 'Fikar Hilmi Adhrevi',
-        'class': 'PBP C'
-    }
+    def show_main(request):
+        context = {
+            'npm' : '2306203873',
+            'name': 'Fikar Hilmi Adhrevi',
+            'class': 'PBP C'
+        }
 
-    return render(request, "main.html", context)
+        return render(request, "main.html", context)
 '''
 Fungsi ini bertugas untuk menangani permintaan HTTP dan mengembalikan tampilan yang sesuai dengan context yang nantinya akan digunakan pada html.
 
@@ -46,30 +48,30 @@ Fungsi ini bertugas untuk menangani permintaan HTTP dan mengembalikan tampilan y
 
 Di dalam direktori main saya membuat berkas baru bernama urls.py yang berisi 
 '''
-from django.urls import path
-from main.views import show_main
+    from django.urls import path
+    from main.views import show_main
 
-app_name = 'main'
+    app_name = 'main'
 
-urlpatterns = [
-    path('', show_main, name='show_main'),
-]
+    urlpatterns = [
+        path('', show_main, name='show_main'),
+    ]
 '''
 
 kode ini berfungsi mengatur rute URL yang terkait dengan aplikasi main. selanjutnya kita akan menambahkan rute url dalam urls.py proyek untuk menghubungkannya dengan main. pada berkas urls.py pada direktori proyek electrify saya menambahkan impor fungsi include lalu menambahkan pada url patterns menjadi
 '''
-urlpatterns = [
-    ...
-    path('', include('main.urls')),
-    ...
-]
+    urlpatterns = [
+        ...
+        path('', include('main.urls')),
+        ...
+    ]
 '''
 urls.py ini berfungsi untuk mengatur rute url tingkat proyek
 
 **6.Melakukan deployment ke PWS terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses melalui Internet.**
 Pada web PWS saya membuat project baru bernama electrify lalu pada settings.py di projek saya menambahkan URL deployment PWS pada ALLOWED_HOSTS sehingga menjadi
 '''
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
 '''
 setelah itu saya menjalankan command yang diberikan pada web pws
 
