@@ -10,7 +10,6 @@ Saya menjalankan python manage.py startapp main. Setelah perintah di atas dijala
 **3. Melakukan routing pada proyek agar dapat menjalankan aplikasi main.**
 Pada direktori proyek electrify, pada berkas settings.py saya menambahkan 'main' pada INSTALLED_APPS sehingga menjadi 
 
-
 ```
 INSTALLED_APPS = [
     ...,
