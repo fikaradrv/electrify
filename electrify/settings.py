@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-n#z%d_w+ai$5d)$ck#l4!h20ti&%&np&bf=@**yq(n#(-oer=r
 DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost","http://127.0.0.1","http://fikar-hilmi-electrify.pbp.cs.ui.ac.id", "https://fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -53,7 +54,7 @@ ROOT_URLCONF = 'electrify.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
