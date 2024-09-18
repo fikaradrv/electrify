@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 ]
 ```
 
+
 **4. Membuat model pada aplikasi main dengan nama Product dan memiliki atribut wajib sebagai berikut.**
 pada app main pada berkas models.py saya menambahkan 
 
