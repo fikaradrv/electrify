@@ -6,6 +6,7 @@
 
 # Table of contents
 - [Tugas 2](#tugas-2)
+- [Tugas 3](#tugas-3)
 
 
 # Tugas 2
