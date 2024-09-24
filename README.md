@@ -538,7 +538,7 @@ Berikut adalah implementasi kodenya :
    ```
    lalu kita buat file `login.html` yang berisikan sebagai berikut
    ```
-   {% extends 'base.html' %}
+    {% extends 'base.html' %}
 
     {% block meta %}
     <title>Login</title>
