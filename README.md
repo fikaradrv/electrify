@@ -571,6 +571,7 @@ Berikut adalah implementasi kodenya :
 
     {% endblock content %}
     ```
+
     lalu kita buat path urlnya
     ```
     urlpatterns=[
@@ -578,6 +579,7 @@ Berikut adalah implementasi kodenya :
             path('login/', login_user, name='login'),
         ]
     ```
+
     3. Untuk logout yang kita lakukan adalah menambahkan fungsi di `views.py`
     ```
     def logout_user(request):
@@ -587,16 +589,19 @@ Berikut adalah implementasi kodenya :
         return redirect('main:login')
     ```
     lalu kita buat button di `main.html` yang akan berguna untuk memanggil fungsi logout 
+
     ```
     <a href="{% url 'main:logout' %}">
         <button class="logout-button">Logout</button>
     </a>
     ```
+
 - Membuat dua akun pengguna dengan masing-masing tiga dummy data menggunakan model yang telah dibuat pada aplikasi sebelumnya untuk setiap akun di lokal
     ![dummy1](https://github.com/user-attachments/assets/23cf0d11-12ef-4d1e-86ad-3dc2a63abaaf)
     ![image](https://github.com/user-attachments/assets/1113a0a6-2fb0-4f7a-868d-0b3831fa64ef)
 - Menghubungkan model Product dengan User.
     Implementasinya adalah dengan menggunakan foreignkey seperti sebagai berikut
+
     ```
     from django.contrib.auth.models import User
     ....
@@ -604,6 +609,7 @@ Berikut adalah implementasi kodenya :
         user = models.ForeignKey(User, on_delete=models.CASCADE)
         .....
     ```
+
 - Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last login pada halaman utama aplikasi.
     Untuk mengimplementasikan detail last login dan menampilkan cookies kita menggunakan kode dibawah ini
     ```
@@ -615,6 +621,7 @@ Berikut adalah implementasi kodenya :
         'last_login': request.COOKIES['last_login'],
     }
     ```
+    
     ![image](https://github.com/user-attachments/assets/f5f12990-7543-4f57-b6ca-a60b3e5c3ddf)
 </details>
 
