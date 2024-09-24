@@ -573,7 +573,7 @@ Berikut adalah implementasi kodenya :
     ```
 
     lalu kita buat path urlnya
-    ```
+    <!-- ```
     urlpatterns=[
             ..., 
             path('login/', login_user, name='login'),
@@ -623,7 +623,7 @@ Berikut adalah implementasi kodenya :
     ```
     
     ![image](https://github.com/user-attachments/assets/f5f12990-7543-4f57-b6ca-a60b3e5c3ddf)
-</details>
+</details> -->
 
 
 
