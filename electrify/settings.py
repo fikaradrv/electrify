@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-n#z%d_w+ai$5d)$ck#l4!h20ti&%&np&bf=@**yq(n#(-oer=r
 PRODUCTION = os.getenv("PRODUCTION", False)
 DEBUG = not PRODUCTION
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
+ALLOWED_HOSTS = ["localhost", ",127.0.0.1" "fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
 CSRF_TRUSTED_ORIGINS = ["http://localhost","http://127.0.0.1","http://fikar-hilmi-electrify.pbp.cs.ui.ac.id", "https://fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
 # Application definition
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -117,7 +118,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static' # merujuk ke /static root project pada mode development
+    ]
+else:
+    STATIC_ROOT = BASE_DIR / 'static' # merujuk ke /static root project pada mode production
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

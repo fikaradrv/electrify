@@ -1,0 +1,111 @@
+<nav class="electric-navbar fixed top-0 left-0 z-40 w-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <h1 class="electrify-title text-2xl font-bold text-center">Electrify</h1>
+            </div>
+            <div class="hidden md:flex items-center">
+                {% if user.is_authenticated %}
+                    <span class="text-gray-300 mr-4">Welcome, {{ user.username }}</span>
+                    <ul class="navbar-menu" style="display: flex; list-style-type: none; margin: 0; padding: 0;">
+                        <li style="margin-right: 20px;">
+                            <a href="{% url 'main:create_product_entry' %}" class="electrify-button">Add Product</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'main:logout' %}" class="logout-button">Logout</a>
+                        </li>
+                    </ul>
+                {% else %}
+                    <a href="{% url 'main:login' %}" class="text-center electrify-button mr-2">Login</a>
+                    <a href="{% url 'main:register' %}" class="text-center electrify-button">Register</a>
+                {% endif %}
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="mobile-menu-button">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu hidden md:hidden px-4 w-full bg-indigo-600 absolute top-16 z-50">
+        <div class="pt-2 pb-3 space-y-1 mx-auto">
+            {% if user.is_authenticated %}
+                <span class="block text-gray-300 px-3 py-2">Welcome, {{ user.username }}</span>
+                <ul class="navbar-menu-mobile" style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 10px;">
+                        <a href="{% url 'main:create_product_entry' %}" class="block text-center electrify-button">Add Product</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'main:logout' %}" class="block text-center logout-button">Logout</a>
+                    </li>
+                </ul>
+            {% else %}
+                <a href="{% url 'main:login' %}" class="block text-center electrify-button mb-2">Login</a>
+                <a href="{% url 'main:register' %}" class="block text-center electrify-button">Register</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- Internal Styling -->
+<style>
+.electric-navbar {
+    background-color: #000; /* Black background for contrast with electric colors */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.electrify-title {
+    color: yellow; /* Electric blue text */
+}
+
+.electrify-button {
+    background-color: white; /* Neon yellow buttons */
+    color: #000;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s ease;
+}
+
+.logout-button {
+    background-color: red; /* Default red color for Logout button */
+    color: #fff; /* White text for better contrast */
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: darkred; /* Change to a darker red on hover */
+}
+
+.electrify-button:hover {
+    background-color: white; /* Darker yellow on hover */
+}
+
+.mobile-menu-button svg {
+    color: aqua; /* Electric blue for the hamburger menu */
+}
+
+.mobile-menu a {
+    display: block;
+    margin-bottom: 10px; /* Add margin for spacing between links in mobile menu */
+}
+</style>
+
+<!-- JavaScript to toggle the mobile menu -->
+<script>
+    const btn = document.querySelector("button.mobile-menu-button");
+    const menu = document.querySelector(".mobile-menu");
+
+    btn.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+    });
+</script>
