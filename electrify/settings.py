@@ -24,11 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-n#z%d_w+ai$5d)$ck#l4!h20ti&%&np&bf=@**yq(n#(-oer=r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# PRODUCTION = os.getenv("PRODUCTION", False)
-# DEBUG = not PRODUCTION
-DEBUG = True
+PRODUCTION = os.getenv("PRODUCTION", False)
+DEBUG = not PRODUCTION
+# DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", ",127.0.0.1" "fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1" "fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
 CSRF_TRUSTED_ORIGINS = ["http://localhost","http://127.0.0.1","http://fikar-hilmi-electrify.pbp.cs.ui.ac.id", "https://fikar-hilmi-electrify.pbp.cs.ui.ac.id"]
 # Application definition
 #
