@@ -635,14 +635,237 @@ Untuk menghubungkan model dari `Product` dengan `User`, kita akan menggunakan `F
     ![image](https://github.com/user-attachments/assets/f5f12990-7543-4f57-b6ca-a60b3e5c3ddf)
 </details>
 
+<details>
+  <summary style="font-size: 30px; font-family: Arial, sans-serif;"><b>Tugas 5</b></summary>
+
+### Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+Terdapat 4 elemen selector pada CSS yaitu Inline Styles, ID Selector, Class Selector, dan Element Selector. Berikut adalah prioritasnya.
+1. Inline Styles : Inline style adalah penggunaan css untuk memberikan style untuk satu elemen. Contoh :
+    ```html
+    <div style="color: red;">Hello World</div>
+    ```
+2. ID selector : ID Selector adalah salah satu selector yang penggunaanya menggunakan id elemen. Contoh:
+    ```css
+    #header {
+    color: blue;
+    }
+    ```
+3. Class Selector : Class Selector adalah Selector yang menggunakan class `.class`, atribut `type="text"`, atau pseudo-class `:hover`. Contoh :
+    ```css
+    .button {
+        color: green;
+    }
+    ```
+4. Element Selector : Selector yang menggunakan nama elemen HTML `div`, `h1`, dll. dan pseudo-element `::before`, `::after`. Contoh :
+    ```css
+    * {
+    color: gray;
+    }
+    ```
+
+    Jika dua atau lebih selector memiliki spesifisitas yang sama, urutan di mana mereka dituliskan dalam stylesheet juga mempengaruhi. Selector yang ditulis terakhir akan diterapkan.
+
+### Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!
+
+Responsive design adalah pendekatan dalam web development dimana tampilan web dapat menyesuaikan dengan berbagai ukuran layar perangkat (desktop, tablet, dan smartphone).
+
+**Mengapa Penting** :
+- Pengalaman User: Dengan responsive design, user akan mendapatkan pengalaman yang konsisten dan optimal di berbagai perangkat. hal ini agar dapat meningkatkan kepuasan user.
+- SEO : SEO atau Search Engine Optimalization adalah bagaimana sebuah search engine meranking sebuah search page dalam search enginenya. Google memprioritaskan situs web yang pada designnya menggunakan responsive design. Sehingga dengan menggunakan responsive design akan meningkatkan ranking SEO pada web
+- Penghematan Biaya dan Waktu: Dengan menggunakan responsive design akan mengurangi kebutuhan untuk membuat dan memelihara versi terpisah dari web untuk perangkat yang berbeda.
+
+Contoh aplikasi yang menggunakan responsive design:
+1. Twitter
+2. Tokopedia
+
+Contoh aplikasi yang tidak menggunakan responsive design:
+Beberapa situs lama yang sudah outdated. Untuk sekarang jarang ditemukan aplikasi yuang tidak menggunakan responsive design
+
+### Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+**1. Margin**
+- Definisi: Margin adalah ruang kosong di luar elemen HTML. Margin digunakan untuk memberikan jarak antara elemen dan elemen lainnya di sekitarnya.
+- Implementasi:
+    ```css
+    .element {
+        margin: 20px;
+    }
+    ```
+**2. Border**
+- Definisi: Border adalah garis yang mengelilingi elemen HTML. Border bisa berwarna, bold, dan memiliki style (solid, dashed, dll).
+- Implementasi:
+    ```css
+    .element {
+        border: 2px solid black; 
+    }
+    ```
+**3. Padding**
+- Definisi: Padding adalah ruang kosong di dalam elemen HTML, antara konten (seperti teks atau gambar) dan border elemen tersebut. Padding memberikan ruang antara konten dan batas elemen.
+- **Implementasi**:
+    ```css
+    .element {
+        padding: 15px;
+    }
+    ```
+### Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+**1. Flexbox**
+- Definisi: Flexbox, atau Flexible Box Layout, adalah cara untuk mengatur elemen di dalam satu baris atau kolom. flex box membantu dalam mendistribusikan ruang dan meratakan elemen dengan mudah.
+- Kapan Digunakan: Flexbox digunakan ketika ingin mengatur elemen dalam satu arah (baris atau kolom) dan ingin memastikan elemen tersebut dapat membesar atau mengecil sesuai dengan ukuran kontainer.
+- Implementasi:
+    ```css
+    .container {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+    }
+    ```
+
+**2. Grid Layout**
+- Definisi: Grid Layout adalah cara untuk mengatur elemen dalam baris dan kolom. Grid Layout memungkinkan kita untuk membuat tata letak yang lebih kompleks dan terstruktur.
+- Kapan Digunakan: Grid Layout digunakan ketika kita ingin mengatur elemen dalam dua dimensi (baik baris dan kolom) dan memerlukan kontrol yang lebih besar atas posisi elemen.
+- Implementasi:
+    ```css
+    .container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 10px; 
+    }
+    ```
+
+**Kesimpulan**
+- **Flexbox**: Baik digunakan untuk layout satu dimensi (baris atau kolom). Mudah digunakan untuk meratakan dan mendistribusikan elemen.
+- **Grid Layout**: Baik digunakan untuk layout dua dimensi (baris dan kolom). Memberikan kontrol lebih besar untuk tata letak yang kompleks.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)
+
+1. **Implementasikan fungsi untuk menghapus dan mengedit product.**
+    Untuk mengedit dan menghapus product, saya membuat dua fungsi baru di `views.py` yaitu `edit_product` dan `delete_product`.
+    ```python
+    def edit_product(request, id):
+    product = Product.objects.get(pk = id)
+
+    form = ProductEntryForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
+
+    def delete_product(request, id):
+        product = Product.objects.get(pk = id)
+        product.delete()
+        return HttpResponseRedirect(reverse('main:show_main'))
+    ```
+    Selanjutnya saya buat file html baru yaitu `edit_product.html` yang akan berfungsi untuk template edit product. Setelah itu saya buat path urlnya di `urls.py` dengan mengimport fungsi `edit_product` dan `delete_product` dan menambahkan pathnya sebagai berikut:
+    ```python
+    path('edit-product/<uuid:id>', edit_product, name='edit_product'),
+    path('delete/<uuid:id>', delete_product, name='delete_product'),
+    ```
+2. **Kustomisasi halaman login, register, dan tambah product semenarik mungkin.**
+    Tampilan `login.html` saya edit menggunakan Tailwind CSS dengan penjelasan sebagai berikut:
+
+    1. Memakai flex dan grid agar sesuai berbagai ukuran layar.
+    2. Warna: Kombinasi kuning dan biru.
+    3. Memberikan Efek Shadow pada kotak utama.
+    4. Tombol diwarnai kuning dan hover menjadi kuning lebih gelap.
+    5. Pesan berwarna biru, hijau, dan merah sesuai jenis pesannya.
+    
+    Tampilan `register.html` saya edit menggunakan Tailwind CSS dengan penjelasan sebagai berikut:
+    1. Menggunakan flex untuk layout responsif.
+    2. Warna menggunakan kuning dan biru sesuai tema.
+    3. Efek shadow pada kotak utama untuk dimensi visual.
+    4. Tombol daftar berwarna kuning dengan efek hover.
+    5. Pesan error ditampilkan dengan warna merah.
+    6. Input fields dengan focus states yang jelas.
+    7. Layout form yang rapi dengan spacing konsisten.
+    8. Link "Login di sini" berwarna biru dengan efek hover.
+
+    Tampilan `create_product_entry.html` saya edit menggunakan Tailwind CSS dengan penjelasan sebagai berikut:
+    1. Layout responsif dengan flex dan min-h-screen untuk mengisi seluruh tinggi layar.
+    2. Warna latar belakang abu-abu muda dengan form putih untuk kontras.
+    3. Form dalam kotak putih dengan bayangan dan sudut membulat.
+    4. Input fields dengan label jelas dan pesan error merah.
+    5. Tombol submit kuning dengan efek hover.
+    6. Spacing konsisten antar elemen form.
+    7. Desain responsif dengan padding dan margin yang sesuai.
+
+3. **Kustomisasi halaman daftar product menjadi lebih menarik dan responsive.**
+    Untuk bikin halaman daftar produk kita menjadi lebih menarik dan bisa nyesuain di berbagai ukuran layar, saya edit `main.html` dan `card_product.html`. Berikut penjelasan saya:
+
+   1. Layout yang Fleksibel:
+      - Pake Flexbox buat ngatur konten (`flex flex-col items-center`). Jadi semuanya rapi ke tengah.
+      - Produknya ditata pake grid yang bisa berubah-ubah (`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6`). Di HP cuma 1 kolom, di tablet 2, di laptop 3.
+      - Kasih padding yang pinter (`px-4 md:px-8`). Jadi di HP nggak terlalu mepet, di layar gede lebih lega.
+
+   2. Tampilan:
+      - Background halaman abu-abu muda (`bg-gray-100`).
+      - Judul "Product List" dikasih background kuning tua (`bg-yellow-600`).
+      - Kartu produk punya border kuning (`border-2 border-yellow-500`) dan bayangan (`shadow-md`).
+
+   3. Kalau Belum Ada Produk:
+      - Nunjukin gambar "no-products.png" sama pesan.
+      - Pake Flexbox buat naruh semuanya di tengah-tengah (`flex flex-col items-center justify-center`).
+      - Kasih tinggi minimum (`min-h-[24rem]`) biar nggak keliatan kosong banget.
+
+   4. Kalau Udah Ada Produk:
+      - Produknya ditampilin dalam grid yang bisa nyesuain.
+      - Tiap produk pake komponen `card_product.html`.
+      - Kartu produk isinya info penting: nama, harga, stok, deskripsi, sama rating.
+      - Ada tombol edit dan delete dengan ikon dari static.
+
+4. **Untuk setiap card product, buatlah dua buah button untuk mengedit dan menghapus product pada card tersebut**
+
+    Untuk setiap kartu produk, saya nambahin dua tombol di bagian bawahnya:
+
+    1. Tombol Edit:
+    - Bentuknya ikon pensil.
+    - Kalau diklik, langsung ngarahin ke halaman edit produk.
+
+    2. Tombol Delete:
+    - Ikon tempat sampah.
+    - Sekali klik, produknya langsung hilang dari daftar.
+
+    Kedua tombol ini dibikin pake tag `<a>` yang dihias pake Tailwind CSS. Ikonnya diambil dari folder static, jadi bisa gampang diganti.
+5. **Buatlah navigation bar (navbar) untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran device, khususnya mobile dan desktop.**
+    Buat bikin navbar yang responsive, saya bikin file `navbar.html` pake Tailwind CSS. Nih, berikut penjelasan saya:
+
+    1. Struktur Utama:
+    - Pake tag `<nav>` buat wrap semuanya. Dikasih kelas `fixed top-0 left-0 right-0` biar nempel terus di atas.
+    - Warnanya kuning (`bg-yellow-500`) dan ada bayangannya (`shadow-md`).
+
+    2. Biar Bisa Nyesuain Layar:
+    - Pake Flexbox (`flex items-center justify-between`) buat ngatur isinya.
+    - Di HP, menunya disembunyiin, gantinya ada tombol hamburger
+    - Di laptop atau PC, menunya langsung keliatan semua.
+
+    3. Logo sama Judul:
+    - Logo "Electrify" ditaro di kiri, ukurannya bisa gede-kecil tergantung layar.
+    - Pake `text-2xl md:text-3xl` biar di HP nggak kegedean, di laptop pas.
+
+    4. Menu Navigasinya:
+    - Menu utamanya (`<ul>`) dikasih `hidden md:flex`. Jadi di HP ilang, di laptop nongol.
+    - Tiap menu (`<li>`) dikasih jarak dan efek hover.
+
+    5. Tombol Hamburger:
+    - Cuma nongol di HP, pake `md:hidden`.
+    - Gambarnya pake SVG, jadi nggak pecah-pecah.
+
+    6. Menu buat HP:
+    - Awalnya disembunyiin, baru muncul kalo tombol hamburger dipencet.
+    - Posisinya tepat di bawah navbar pake `absolute top-full left-0 right-0`.
+    - Warnanya putih biar keliatan jelas bedanya sama navbar.
+
+</details>
 
 
 
 
-	      
 
 
 
+    
 
 
 
