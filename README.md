@@ -859,6 +859,279 @@ Beberapa situs lama yang sudah outdated. Untuk sekarang jarang ditemukan aplikas
 
 </details>
 
+<details>
+  <summary style="font-size: 30px; font-family: Arial, sans-serif;"><b>Tugas 6</b></summary>
+  
+### Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!
+
+Penggunaan JavaScript dalam pengembangan aplikasi web, khususnya dalam konteks proyek Electrify, memberikan beberapa manfaat penting:
+
+1. Interaktivitas: JavaScript memungkinkan pembuatan elemen interaktif pada halaman web. Dalam proyek ini terlihat pada implementasi modal untuk menambahkan produk dan fungsi-fungsi seperti `showModal()` dan `hideModal()`.
+
+
+2. Dinamisme: Dengan JavaScript, konten halaman dapat diperbarui secara dinamis tanpa perlu me-refresh seluruh halaman. Fungsi `refreshProductEntries()` di proyek ini contohnya adalah dengan memperbarui daftar produk secara real-time.
+
+3. Asynchronous Operations: JavaScript memungkinkan operasi asynchronous, yang penting untuk komunikasi dengan server tanpa menghentikan eksekusi kode lainnya. Penggunaan `fetch()` di proyek ini untuk mengambil dan mengirim data produk.
+
+4. Validasi Form: JavaScript dapat digunakan untuk memvalidasi input pengguna sebelum dikirim ke server, meningkatkan user experience dan mengurangi beban server. 
+
+5. Manipulasi DOM: JavaScript memungkinkan manipulasi struktur, gaya, dan konten halaman web secara dinamis. di proyek ini terlihat saat menambahkan atau menghapus elemen produk dari DOM.
+
+6. Responsif UI: Dengan JavaScript, kita dapat membuat antarmuka pengguna yang responsif terhadap interaksi pengguna. Contohnya adalah implementasi navbar responsif di proyek ini yang menyesuaikan tampilan berdasarkan ukuran layar.
+
+7. AJAX: JavaScript memungkinkan komunikasi asynchronous dengan server melalui AJAX, yang digunakan di proyek ini yaitu untuk menambahkan produk tanpa me-refresh halaman (`addProductEntry()`).
+
+Penggunaan JavaScript dalam proyek ini meningkatkan interaktivitas, kinerja, dan pengalaman pengguna secara keseluruhan, membuat aplikasi web lebih dinamis dan responsif.
+
+### Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?
+
+Penggunaan `await` dengan `fetch()` di proyek ini berfungsi untuk menunggu resolusi Promise yang dikembalikan oleh `fetch()` sebelum melanjutkan eksekusi kode. Ini penting karena:
+
+1. Sinkronisasi: `await` memastikan bahwa kode menunggu sampai data dari server diterima sebelum melanjutkan, menjaga urutan eksekusi yang benar.
+
+2. Penanganan Error: Memudahkan penanganan error dengan memungkinkan penggunaan blok try-catch untuk menangkap kesalahan dalam operasi asynchronous.
+
+3. Readability: Membuat kode asynchronous lebih mudah dibaca dan dipahami, mirip dengan kode synchronous.
+
+Dalam Electrify, `await` digunakan dalam fungsi `getProductEntries()`:
+```
+async function getProductEntries() {
+    const response = await fetch("{% url 'main:show_json' %}");
+    return await response.json();
+}
+```
+
+Jika `await` tidak digunakan:
+
+1. Asynchronous Execution: Kode akan terus berjalan tanpa menunggu `fetch()` selesai, yang dapat menyebabkan kesalahan jika mencoba mengakses data yang belum tersedia.
+
+2. Penanganan Promise: Kita harus menggunakan `.then()` untuk menangani hasil `fetch()`, yang dapat membuat kode lebih kompleks, terutama untuk operasi berurutan.
+
+3. Error Handling: Penanganan error menjadi lebih rumit karena kita perlu menggunakan `.catch()` terpisah untuk setiap Promise.
+
+### Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST?
+
+Decorator `csrf_exempt` digunakan pada view yang menangani AJAX POST request untuk menonaktifkan perlindungan CSRF (Cross-Site Request Forgery) Django. Alasannya:
+
+1. AJAX Request: AJAX request sering tidak menyertakan CSRF token yang biasanya disertakan dalam form HTML.
+
+2. Keamanan vs Kemudahan: Dalam beberapa kasus, seperti API publik atau endpoint yang tidak memerlukan autentikasi, perlindungan CSRF mungkin tidak diperlukan atau bahkan menghambat fungsionalitas.
+
+3. Alternatif Keamanan: Ketika `csrf_exempt` digunakan, penting untuk menerapkan metode keamanan alternatif seperti autentikasi token.
+
+Dalam proyek ini, `csrf_exempt` digunakan pada view `add_product_ajax`:
+
+```
+@csrf_exempt
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_product = Product(name=name, price=price, description=description, user=user)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+```
+
+### Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?
+
+Pembersihan data input pengguna dilakukan di backend selain di frontend karena:
+
+1. Keamanan Berlapis: Validasi di frontend bisa dilewati oleh user yang mahir, sehingga validasi di backend menjadi lapisan keamanan tambahan.
+
+2. Konsistensi Data: Backend memastikan bahwa semua data yang masuk ke database telah dibersihkan, terlepas dari sumber inputnya (web, mobile app, API).
+
+3. Perlindungan terhadap Serangan: Backend dapat melindungi dari serangan seperti SQL Injection yang mungkin lolos dari validasi frontend.
+
+4. Validasi Kompleks: Beberapa validasi mungkin memerlukan akses ke database atau logika bisnis yang hanya tersedia di backend.
+
+5. Keandalan: Tidak bisa sepenuhnya mengandalkan validasi client-side karena bisa dimanipulasi oleh pengguna.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+
+AJAX GET
+
+1. Mengubah kode cards data product agar dapat mendukung AJAX GET dan melakukan pengambilan data product menggunakan AJAX GET, memastikan bahwa data yang diambil hanyalah data milik pengguna yang logged-in:
+
+   - Membuat fungsi pada views.py untuk mengembalikan data product dalam format JSON:
+   
+     ```python
+     def show_json(request):
+         data = Product.objects.filter(user=request.user)
+         return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+     ```
+
+   - Menambahkan URL pattern untuk fungsi show_json di urls.py.
+
+   - Membuat fungsi JavaScript asinkron di main.html untuk mengambil data product:
+   
+     ```javascript
+     async function getProductEntries() {
+         return fetch("{% url 'main:show_json' %}").then((res) => res.json());
+     }
+     ```
+
+   - Implementasi fungsi refreshProductEntries() untuk memperbarui tampilan product cards:
+   
+     ```javascript
+     async function refreshProductEntries() {
+         document.getElementById("product_entry_cards").innerHTML = "";
+         document.getElementById("product_entry_cards").className = "";
+         const productEntries = await getProductEntries();
+         let htmlString = "";
+         let classNameString = "";
+
+         if (productEntries.length === 0) {
+             classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+             htmlString = `
+                 <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+                     <img src="{% static 'image/no-products.png' %}" alt="No products" class="w-32 h-32 mb-4"/>
+                     <p class="text-center text-gray-600 mt-4">No products available.</p>
+                 </div>
+             `;
+         } else {
+             classNameString = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full"
+             productEntries.forEach((item) => {
+                 htmlString += `
+                 <div class="bg-white shadow-md rounded-lg border-2 border-yellow-500 mb-4">
+                     <div class="p-4">
+                         <h3 class="font-bold text-xl mb-2 text-yellow-500">${DOMPurify.sanitize(item.fields.name)}</h3>
+                         <p class="text-gray-700"><strong>Price:</strong> Rp.${item.fields.price}</p>
+                         <p class="text-gray-700"><strong>Stock:</strong> ${item.fields.stock}</p>
+                         <p class="text-gray-700"><strong>Description:</strong> ${DOMPurify.sanitize(item.fields.description)}</p>
+                         <p class="text-gray-700"><strong>Rating:</strong> ${item.fields.rating} Stars</p>
+                     </div>
+                     <div class="flex justify-between p-4 border-t border-blue-200">
+                         <a href="/edit-product/${item.pk}" class="inline-flex items-center">
+                             <img src="{% static 'image/edit-icon.png' %}" alt="Edit product" class="w-6 h-6" />
+                         </a>
+                         <a href="/delete/${item.pk}" class="inline-flex items-center">
+                             <img src="{% static 'image/delete-icon.png' %}" alt="Delete product" class="w-6 h-6" />
+                         </a>
+                     </div>
+                 </div>
+                 `;
+             });
+         }
+         document.getElementById("product_entry_cards").className = classNameString;
+         document.getElementById("product_entry_cards").innerHTML = htmlString;
+     }
+     ```
+
+   - Memanggil fungsi refreshProductEntries() saat halaman dimuat:
+   
+     ```javascript
+     refreshProductEntries();
+     ```
+
+AJAX POST
+
+2. Membuat tombol yang membuka modal dengan form untuk menambahkan product:
+   - Menambahkan HTML untuk modal dan form di main.html:
+     ```html
+     <button data-modal-target="crudModal" data-modal-toggle="crudModal" 
+             class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg 
+                    transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 mb-4" 
+             onclick="showModal();">
+         Add New Product by AJAX
+     </button>
+     ```
+   - Membuat fungsi JavaScript untuk menampilkan dan menyembunyikan modal:
+     ```javascript
+     function showModal() {
+         modal.classList.remove('hidden'); 
+         setTimeout(() => {
+             modalContent.classList.remove('opacity-0', 'scale-95');
+             modalContent.classList.add('opacity-100', 'scale-100');
+         }, 50); 
+     }
+
+     function hideModal() {
+         modalContent.classList.remove('opacity-100', 'scale-100');
+         modalContent.classList.add('opacity-0', 'scale-95');
+
+         setTimeout(() => {
+             modal.classList.add('hidden');
+         }, 150); 
+     }
+     ```
+
+3. Membuat fungsi view baru untuk menambahkan product baru ke dalam basis data:
+   - Implementasi fungsi add_product_ajax di views.py:
+     ```python
+     @csrf_exempt
+     @require_POST
+     def add_product_entry_ajax(request):
+         name = strip_tags(request.POST.get("name"))
+         price = request.POST.get("price")
+         stock = request.POST.get("stock")
+         description = strip_tags(request.POST.get("description"))
+         rating = request.POST.get("rating")
+         user = request.user
+
+         new_product = Product(
+             name=name, 
+             price=price,
+             stock=stock,
+             description=description,
+             rating=rating,
+             user=user
+         )
+         new_product.save()
+
+         return HttpResponse(b"CREATED", status=201)
+     ```
+
+4. Membuat path /create-ajax/ yang mengarah ke fungsi view yang baru dibuat:
+   - Menambahkan URL pattern di urls.py:
+     ```python
+     path('create-product-entry-ajax/', add_product_entry_ajax, name='add_product_entry_ajax'),
+     ```
+
+5. Menghubungkan form di dalam modal ke path /create-ajax/:
+   - Membuat fungsi JavaScript untuk mengirim data form menggunakan AJAX:
+   ```javascript
+     function addProductEntry() {
+         fetch("{% url 'main:add_product_entry_ajax' %}", {
+             method: "POST",
+             body: new FormData(document.querySelector('#productEntryForm')),
+         })
+         .then(response => refreshProductEntries())
+
+         document.getElementById("productEntryForm").reset(); 
+         hideModal();
+
+         return false;
+     }
+
+     document.getElementById("productEntryForm").addEventListener("submit", (e) => {
+         e.preventDefault();
+         addProductEntry();
+     })
+     ```
+
+     
+
+6. Melakukan refresh pada halaman utama secara asinkronus:
+   - Memanggil refreshProductEntries() setelah berhasil menambahkan product baru:
+     ```javascript
+     function addProductEntry() {
+         // ... (kode sebelumnya)
+         .then(refreshProductEntries)
+         // ... (kode selanjutnya)
+     }
+     ```
+
+
+
+
+
+
 
 
 
